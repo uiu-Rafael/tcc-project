@@ -1,101 +1,74 @@
-import Image from "next/image";
+'use client';
+import React, { useState } from 'react';
+import EmotionalProfileModal from '@/components/emotional-profile-modal';
+import EmotionalProfile from '@/components/emotional-profile-card';
+import HumorSelector from '@/components/humor-option';
+import { useProfile } from '@/context/profile-context';
+import CardsDetails from '@/components/cards-details';
+import DailyFormModal from '@/components/daily-form-modal';
+import DatePickerModal from '@/components/date-picker-modal';
+import { Button } from '@nextui-org/react';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const {
+    isProfileSubmitted,
+    openProfileModal,
+    setOpenProfileModal,
+    openDailyModal,
+    setOpenDailyModal,
+  } = useProfile();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [selectedTime, setSelectedTime] = useState<string>('');
+
+  const openProfileFormModal = () => setOpenProfileModal(true);
+  const openDailyFormModal = () => setOpenDailyModal(true);
+
+  const handleDateSelect = (date: string, time: string) => {
+    setSelectedDate(date);
+    setSelectedTime(time);
+    setIsDatePickerOpen(false);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 p-6 mb-14">
+      <Button
+        className="w-full mb-6 text-section2"
+        color="secondary"
+        onClick={() => setIsDatePickerOpen(true)}
+      >
+        <h1 className="text-center text-2xl font-bold">
+          {selectedDate || 'Selecione uma data!'}
+        </h1>
+      </Button>
+
+      {!isProfileSubmitted ? (
+        <div onClick={openProfileFormModal}>
+          <EmotionalProfile isPressable={true} onPress={openProfileFormModal} />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      ) : (
+        <div onClick={openDailyFormModal}>
+          <HumorSelector isPressable={true} onPress={openDailyFormModal} />
+        </div>
+      )}
+
+      {openProfileModal && <EmotionalProfileModal />}
+      {openDailyModal && (
+        <DailyFormModal
+          selectedDate={selectedDate}
+          selectedTime={selectedTime}
+        />
+      )}
+      {isDatePickerOpen && (
+        <DatePickerModal
+          isOpen={isDatePickerOpen}
+          onClose={() => setIsDatePickerOpen(false)}
+          onDateSelect={handleDateSelect}
+        />
+      )}
+
+      <CardsDetails />
     </div>
   );
 }
