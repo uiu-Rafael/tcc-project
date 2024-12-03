@@ -44,11 +44,11 @@ export default function Home() {
       </Button>
 
       {!isProfileSubmitted ? (
-        <div onClick={openProfileFormModal}>
+        <div onClick={openProfileFormModal} className="flex justify-center">
           <EmotionalProfile isPressable={true} onPress={openProfileFormModal} />
         </div>
       ) : (
-        <div onClick={openDailyFormModal}>
+        <div onClick={openDailyFormModal} className="flex justify-center">
           <HumorSelector isPressable={true} onPress={openDailyFormModal} />
         </div>
       )}

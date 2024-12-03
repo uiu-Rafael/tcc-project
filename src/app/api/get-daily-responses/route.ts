@@ -27,7 +27,7 @@ export async function GET() {
 
     const stmt = db.prepare(`
       SELECT id, familyInteraction, friendsInteraction, physicalExercise,
-             sleepQuality, stressLevel, overallMood, moodScore, createdAt, date, time 
+             sleepQuality, stressLevel, overallMood, moodScore, studyHabits, createdAt, date, time 
       FROM daily_responses
     `);
     const dailyResponses = stmt.all(); // Obtém todos os registros

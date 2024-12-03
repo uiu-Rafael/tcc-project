@@ -12,19 +12,16 @@ const config: Config = {
     container: {
       center: true,
     },
-    backgroundImage: {
-      img_bg_header: "url('/assets/bgHeader.png')",
-    },
-
     extend: {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'gradient-to-r': 'linear-gradient(to right, #6FABFA, #14B8A6)',
       },
       colors: {
         color1: '#3E4756',
-        color2: '#A1ACBD', //essa cor fica pra quando algo for desabilitado
+        color2: '#A1ACBD',
         color3: '#8a8a8a',
         color4: '#373737',
         color5: '#DEDEDE',
@@ -66,14 +63,14 @@ const config: Config = {
         max: '18px',
       },
       spacing: {
-        container: '1.3rem', // Define o espaçamento interno para a classe "container"
-        'container-margin': '20px', // Define a margem interna para a classe "container"
+        container: '1.3rem',
+        'container-margin': '20px',
         'container-padding': '5rem 1rem',
         arrow: '10px',
       },
       container: {
-        center: true, // Centraliza o conteúdo horizontalmente
-        padding: '1rem', // Define o preenchimento interno para o container
+        center: true,
+        padding: '1rem',
       },
       boxShadow: {
         'top-only':

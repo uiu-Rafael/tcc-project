@@ -19,6 +19,7 @@ interface DailyResponse {
   sleepQuality: string;
   stressLevel: string;
   moodScore: number;
+  studyHabits: string;
   date: string;
   time: string;
 }
@@ -45,6 +46,10 @@ interface ProfileContextProps {
   addRegistro: (registro: Registro) => void;
   isLoading: boolean; // Estado de carregamento
   setIsLoading: (value: boolean) => void; // Função de atualização
+  emotionalProfileScore: number;
+  setEmotionalProfileScore: (score: number) => void;
+  moodCategory: string;
+  setMoodCategory: (category: string) => void;
 }
 
 const ProfileContext = createContext<ProfileContextProps | undefined>(
@@ -60,6 +65,8 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
   const [openDailyModal, setOpenDailyModal] = useState(false);
   const [registros, setRegistros] = useState<Registro[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false); // Inicializando o estado de carregamento
+  const [emotionalProfileScore, setEmotionalProfileScore] = useState<number>(0);
+  const [moodCategory, setMoodCategory] = useState<string>('Neutro');
 
   const addRegistro = (registro: Registro) => {
     setRegistros((prev) => [...prev, registro]);
@@ -104,6 +111,7 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
               `Exercício: ${item.physicalExercise}`,
               `Sono: ${item.sleepQuality}`,
               `Estresse: ${item.stressLevel}`,
+              `Estudo: ${item.studyHabits}`,
             ],
             cor:
               item.overallMood === 'Ótimo'
@@ -142,6 +150,10 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
         addRegistro,
         isLoading,
         setIsLoading, // Passando a função de atualização
+        emotionalProfileScore,
+        setEmotionalProfileScore,
+        moodCategory,
+        setMoodCategory,
       }}
     >
       {children}
